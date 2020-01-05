@@ -18,8 +18,8 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->string('image');
-            $table->timestamp('published_from');
-            $table->timestamp('published_until');
+            $table->timestamp('published_from')->nullable();
+            $table->timestamp('published_until')->nullable();
             $table->integer('price');
             $table->timestamps();
         });
