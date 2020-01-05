@@ -90,6 +90,7 @@
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php72" />
       <path value="$PROJECT_DIR$/vendor/symfony/yaml" />
       <path value="$PROJECT_DIR$/vendor/laravel/homestead" />
+      <path value="$PROJECT_DIR$/vendor/laravel-frontend-presets/black-dashboard" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />
