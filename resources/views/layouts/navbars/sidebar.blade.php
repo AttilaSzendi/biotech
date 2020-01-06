@@ -29,6 +29,13 @@
                     <p>{{ __('Tag Management') }}</p>
                 </a>
             </li>
+
+            <li @if ($pageSlug == 'products') class="active " @endif>
+                <a href="{{ route('products.index')  }}">
+                    <i class="tim-icons icon-bullet-list-67"></i>
+                    <p>{{ __('Product Management') }}</p>
+                </a>
+            </li>
         </ul>
     </div>
 </div>

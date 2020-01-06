@@ -2,7 +2,9 @@
 
 namespace App\Contracts;
 
-interface ProductRepositoryInterface
+/**
+ * @method
+ */
+interface ProductRepositoryInterface extends ModelRepositoryInterface
 {
-
 }

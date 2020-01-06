@@ -44,6 +44,10 @@ class TagController extends Controller
         return redirect()->route('tags.index')->withStatus(__('Tag successfully created.'));
     }
 
+    /**
+     * @param int $tagId
+     * @return View
+     */
     public function edit(int $tagId)
     {
         $tag = $this->tagRepository->findById($tagId);

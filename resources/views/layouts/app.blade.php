@@ -19,6 +19,15 @@
         <!-- CSS -->
         <link href="{{ asset('black') }}/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
         <link href="{{ asset('black') }}/css/theme.css" rel="stylesheet" />
+        <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+            tinymce.init({selector:'textarea'});
+            $('#input-publish_from').datepicker();
+            $('#input-publish_until').datepicker();
+        </script>
     </head>
     <body class="{{ $class ?? '' }}">
         @auth()
