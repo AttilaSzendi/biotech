@@ -43,13 +43,15 @@ abstract class ModelRepository implements ModelRepositoryInterface
     /**
      * @param int $id
      * @param array $input
-     * @return bool
+     * @return Model
      */
-    public function updateById(int $id, array $input): bool
+    public function updateById(int $id, array $input): Model
     {
-        $Model = $this->model->newQuery()->findOrFail($id);
+        $model = $this->model->newQuery()->findOrFail($id);
 
-        return $Model->update($input);
+        $model->update($input);
+
+        return $model;
     }
 
     /**
@@ -59,8 +61,8 @@ abstract class ModelRepository implements ModelRepositoryInterface
      */
     public function deleteById(int $id): bool
     {
-        $Model = $this->model->newQuery()->findOrFail($id);
+        $model = $this->model->newQuery()->findOrFail($id);
 
-        return $Model->delete();
+        return $model->delete();
     }
 }

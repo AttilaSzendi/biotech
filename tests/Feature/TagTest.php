@@ -18,13 +18,19 @@ class TagTest extends TestCase
     {
         $this->login();
 
-        $tagName = 'akciós';
+        $names = [
+            'tag_1',
+            'tag_2',
+            'tag_3',
+        ];
 
-        factory(Tag::class, 10)->create(['name' => $tagName]);
+        foreach ($names as $name) {
+            factory(Tag::class)->create(['name' => $name]);
+        }
 
         $response = $this->get(route('tags.index'));
 
-        $response->assertSee($tagName);
+        $response->assertSeeInOrder($names);
 
         $response->assertOk();
     }

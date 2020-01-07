@@ -41,7 +41,9 @@ class ProductController extends Controller
     {
         $this->uploadFile($request);
 
-        $this->productRepository->store($request->all());
+        $product = $this->productRepository->store($request->all());
+
+        $this->syncTags($request, $product);
 
         return redirect()->route('products.index')->withStatus(__('Product successfully created.'));
     }
@@ -62,7 +64,9 @@ class ProductController extends Controller
     {
         $this->uploadFile($request);
 
-        $this->productRepository->updateById($productId, $request->all());
+        $product = $this->productRepository->updateById($productId, $request->all());
+
+        $this->syncTags($request, $product);
 
         return redirect()->route('products.index')->withStatus(__('Product successfully updated.'));
     }
@@ -88,5 +92,14 @@ class ProductController extends Controller
 
             $request->merge(['image' => $fileName]);
         }
+    }
+
+    /**
+     * @param ProductRequest $request
+     * @param \Illuminate\Database\Eloquent\Model $product
+     */
+    public function syncTags(ProductRequest $request, \Illuminate\Database\Eloquent\Model $product): void
+    {
+        $product->tags()->sync($request->get('tags'));
     }
 }

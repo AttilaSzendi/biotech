@@ -22,13 +22,19 @@ class ProductTest extends TestCase
     {
         $this->login();
 
-        $name = 'teszt 1';
+        $names = [
+            'product_1',
+            'product_2',
+            'product_3',
+        ];
 
-        factory(Product::class, 10)->create(['name' => $name]);
+        foreach ($names as $name) {
+            factory(Product::class)->create(['name' => $name]);
+        }
 
         $response = $this->get(route('products.index'));
 
-        $response->assertSee($name);
+        $response->assertSeeInOrder($names);
 
         $response->assertOk();
     }
@@ -55,11 +61,14 @@ class ProductTest extends TestCase
         Storage::fake('public');
         $image = UploadedFile::fake()->image('test.jpg');
 
+        $tagIds = $this->getTagIds();
+
         $input = [
             'name' => $this->faker->word,
             'description' => $this->faker->randomHtml(),
             'src' => $image,
-            'price' => $this->faker->numberBetween(100, 1000)
+            'price' => $this->faker->numberBetween(100, 1000),
+            'tags' => $tagIds
         ];
 
         $response = $this->post(route('products.store'), $input);
@@ -68,6 +77,8 @@ class ProductTest extends TestCase
             'name' => $input['name'],
             'price' => $input['price']
         ]);
+
+        $this->assertProductHasTagged($tagIds);
 
         $response->assertRedirect(route('products.index'));
     }
@@ -95,10 +106,13 @@ class ProductTest extends TestCase
 
         $product = factory(Product::class)->create();
 
+        $tagIds = $this->getTagIds();
+
         $input = [
             'name' => 'új',
             'description' => $product->description,
-            'price' => $product->price
+            'price' => $product->price,
+            'tags' => $tagIds
         ];
 
         $response = $this->put(route('products.update', $product->id), $input);
@@ -107,6 +121,8 @@ class ProductTest extends TestCase
             'id' => $product->id,
             'name' => $input['name'],
         ]);
+
+        $this->assertProductHasTagged($tagIds);
 
         $response->assertRedirect(route('products.index'));
     }
@@ -132,5 +148,29 @@ class ProductTest extends TestCase
         $user = factory(User::class)->create();
 
         $this->actingAs($user);
+    }
+
+    /**
+     * @return array
+     */
+    public function getTagIds(): array
+    {
+        return factory(Tag::class, 2)->create()->pluck('id')->toArray();
+    }
+
+    /**
+     * @param $tagIds
+     */
+    public function assertProductHasTagged($tagIds): void
+    {
+        $this->assertDatabaseHas('product_tag', [
+            'product_id' => 1,
+            'tag_id' => $tagIds[0]
+        ]);
+
+        $this->assertDatabaseHas('product_tag', [
+            'product_id' => 1,
+            'tag_id' => $tagIds[1]
+        ]);
     }
 }

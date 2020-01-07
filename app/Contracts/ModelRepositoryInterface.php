@@ -27,9 +27,9 @@ interface ModelRepositoryInterface
     /**
      * @param int $id
      * @param array $input
-     * @return bool
+     * @return Model
      */
-    public function updateById(int $id, array $input): bool;
+    public function updateById(int $id, array $input): Model;
 
     /**
      * @param int $id
