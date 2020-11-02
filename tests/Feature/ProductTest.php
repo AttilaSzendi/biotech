@@ -64,8 +64,14 @@ class ProductTest extends TestCase
         $tagIds = $this->getTagIds();
 
         $input = [
-            'name' => $this->faker->word,
-            'description' => $this->faker->randomHtml(),
+            'en' => [
+                'name' => $this->faker->word,
+                'description' => $this->faker->randomHtml(),
+            ],
+            'hu' => [
+                'name' => $this->faker->word,
+                'description' => $this->faker->randomHtml(),
+            ],
             'src' => $image,
             'price' => $this->faker->numberBetween(100, 1000),
             'tags' => $tagIds
@@ -74,8 +80,19 @@ class ProductTest extends TestCase
         $response = $this->post(route('products.store'), $input);
 
         $this->assertDatabaseHas('products', [
-            'name' => $input['name'],
             'price' => $input['price']
+        ]);
+
+        $this->assertDatabaseHas('product_translations', [
+            "product_id" => 1,
+            "locale" => "en",
+            "name" => $input['en']['name'],
+        ]);
+
+        $this->assertDatabaseHas('product_translations', [
+            "product_id" => 1,
+            "locale" => "hu",
+            "name" => $input['hu']['name'],
         ]);
 
         $this->assertProductHasTagged($tagIds);
@@ -90,9 +107,9 @@ class ProductTest extends TestCase
     {
         $this->login();
 
-        $tag = factory(Product::class)->create();
+        $product = factory(Product::class)->create();
 
-        $response = $this->get(route('products.edit', $tag->id));
+        $response = $this->get(route('products.edit', $product->id));
 
         $response->assertOk();
     }
@@ -109,8 +126,14 @@ class ProductTest extends TestCase
         $tagIds = $this->getTagIds();
 
         $input = [
-            'name' => 'új',
-            'description' => $product->description,
+            'en' => [
+                'name' => $this->faker->word,
+                'description' => $this->faker->randomHtml(),
+            ],
+            'hu' => [
+                'name' => $this->faker->word,
+                'description' => $this->faker->randomHtml(),
+            ],
             'price' => $product->price,
             'tags' => $tagIds
         ];
@@ -119,7 +142,19 @@ class ProductTest extends TestCase
 
         $this->assertDatabaseHas('products', [
             'id' => $product->id,
-            'name' => $input['name'],
+            'price' => $input['price'],
+        ]);
+
+        $this->assertDatabaseHas('product_translations', [
+            "product_id" => 1,
+            "locale" => "en",
+            "name" => $input['en']['name'],
+        ]);
+
+        $this->assertDatabaseHas('product_translations', [
+            "product_id" => 1,
+            "locale" => "hu",
+            "name" => $input['hu']['name'],
         ]);
 
         $this->assertProductHasTagged($tagIds);

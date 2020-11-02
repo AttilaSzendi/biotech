@@ -20,8 +20,10 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
-            'description' => 'required|string',
+            'en.name' => 'required|string',
+            'en.description' => 'required|string',
+            'hu.name' => 'required|string',
+            'hu.description' => 'required|string',
             'src' => 'image',
             'published_from' => 'nullable|date',
             'published_until' => 'nullable|date',
