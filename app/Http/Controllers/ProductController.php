@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Contracts\ProductRepositoryInterface;
 use App\Http\Requests\ProductRequest;
+use App\Product;
+use App\Tag;
 use Illuminate\View\View;
 
 class ProductController extends Controller
@@ -30,7 +32,9 @@ class ProductController extends Controller
 
     public function create()
     {
-        return view('product.create');
+        $tags = Tag::all();
+
+        return view('product.create', compact('tags'));
     }
 
     /**
@@ -41,6 +45,7 @@ class ProductController extends Controller
     {
         $this->uploadFile($request);
 
+        /** @var Product $product */
         $product = $this->productRepository->store($request->all());
 
         $this->syncTags($request, $product);
@@ -52,7 +57,11 @@ class ProductController extends Controller
     {
         $product = $this->productRepository->findById($productId);
 
-        return view('product.edit', compact('product'));
+        $product->load('tags');
+
+        $tags = Tag::all();
+
+        return view('product.edit', compact('product', 'tags'));
     }
 
     /**
@@ -96,9 +105,9 @@ class ProductController extends Controller
 
     /**
      * @param ProductRequest $request
-     * @param \Illuminate\Database\Eloquent\Model $product
+     * @param Product $product
      */
-    public function syncTags(ProductRequest $request, \Illuminate\Database\Eloquent\Model $product): void
+    public function syncTags(ProductRequest $request, Product $product): void
     {
         $product->tags()->sync($request->get('tags'));
     }

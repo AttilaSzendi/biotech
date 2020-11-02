@@ -21,5 +21,4 @@ php artisan key:generate
 php artisan migrate --seed
 ```
 Feature teszteket írtam Tag és Product Crud-okra.
-Sajnos nem értem a végére így hiányzik a többnyelvű szerkeszthetőség, illetve a tageket nem lehet még a product-okhoz menteni.
 

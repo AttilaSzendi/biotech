@@ -6,7 +6,7 @@ use App\Contracts\ProductRepositoryInterface;
 use App\Product;
 
 /**
- * @method Product store(array $input) : Model
+ * @method Product store(array $input)
  */
 class ProductRepository extends ModelRepository implements ProductRepositoryInterface
 {
